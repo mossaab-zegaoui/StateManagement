@@ -1,6 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, catchError, map, of, startWith } from 'rxjs';
+import {
+  Observable,
+  Subject,
+  catchError,
+  map,
+  of,
+  startWith,
+  takeUntil,
+} from 'rxjs';
 import {
   AppState,
   ProductAction,
@@ -16,20 +24,23 @@ import { ProductService } from 'src/app/services/product.service';
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.css'],
 })
-export class ProductsComponent implements OnInit {
+export class ProductsComponent implements OnInit, OnDestroy {
   products$: Observable<AppState<Product[]>> | null = null;
-
+  private unsubscribe$: Subject<void> = new Subject();
   constructor(
     private productService: ProductService,
     private router: Router,
     private eventService: EventDrivenService
   ) {}
+
   ngOnInit(): void {
-    this.eventService.eventSubject$.subscribe({
-      next: ($event: ProductAction) => {
-        this.onAction($event);
-      },
-    });
+    this.eventService.eventSubject$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: ($event: ProductAction) => {
+          this.onAction($event);
+        },
+      });
   }
   onAction($event: ProductAction) {
     switch ($event.type) {
@@ -82,22 +93,28 @@ export class ProductsComponent implements OnInit {
     this.router.navigate([`products/edit/${id}`]);
   }
   onDeleteProduct(id: string) {
-    this.productService.deleteProduct(id).subscribe({
-      next: () => {
-        this.onGetAllProducts();
-        console.log('product deleted');
-      },
-    });
+    this.productService
+      .deleteProduct(id)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: () => {
+          this.onGetAllProducts();
+          console.log('product deleted');
+        },
+      });
   }
   onAddProduct() {
     this.router.navigate(['products/add']);
   }
   onSelectProduct(product: Product) {
-    this.productService.selectProduct(product).subscribe({
-      next: (product) => {
-        console.log(product);
-      },
-    });
+    this.productService
+      .selectProduct(product)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: (product) => {
+          console.log(product);
+        },
+      });
   }
   onGetSelectedProducts() {
     this.products$ = this.productService.getSelectedProducts().pipe(
@@ -128,5 +145,9 @@ export class ProductsComponent implements OnInit {
         })
       )
     );
+  }
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }
