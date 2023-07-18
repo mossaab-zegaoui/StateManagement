@@ -1,28 +1,34 @@
 {
   "products": [
     {
-      "name": "product88",
-      "id": "12",
-      "price": 3,
+      "id": "2",
+      "name": "product_3",
+      "price": "39.99",
       "isSelected": false
     },
     {
-      "id": "11",
-      "name": "product_7",
-      "price": 66,
-      "isSelected": true
-    },
-    {
-      "id": "1",
-      "name": "product_7",
-      "price": 66,
-      "isSelected": true
-    },
-    {
-      "id": "99",
-      "name": "product_99",
-      "price": "663.99",
+      "id": "3",
+      "name": "product_3",
+      "price": "39.99",
       "isSelected": false
+    },
+    {
+      "id": "5",
+      "name": "product_5",
+      "price": "39.99",
+      "isSelected": true
+    },
+    {
+      "id": "6",
+      "name": "product_6",
+      "price": 0,
+      "isSelected": true
+    },
+    {
+      "id": "7",
+      "name": "product_7",
+      "price": "77.99",
+      "isSelected": true
     }
   ]
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, catchError, map, of, startWith } from 'rxjs';
 import {
@@ -8,6 +8,7 @@ import {
   ProductState,
 } from 'src/app/model/app-state.interface';
 import { Product } from 'src/app/model/prodcut.interface';
+import { EventDrivenService } from 'src/app/services/event-driven.service';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -15,10 +16,21 @@ import { ProductService } from 'src/app/services/product.service';
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.css'],
 })
-export class ProductsComponent {
+export class ProductsComponent implements OnInit {
   products$: Observable<AppState<Product[]>> | null = null;
 
-  constructor(private productService: ProductService, private router: Router) {}
+  constructor(
+    private productService: ProductService,
+    private router: Router,
+    private eventService: EventDrivenService
+  ) {}
+  ngOnInit(): void {
+    this.eventService.eventSubject$.subscribe({
+      next: ($event: ProductAction) => {
+        this.onAction($event);
+      },
+    });
+  }
   onAction($event: ProductAction) {
     switch ($event.type) {
       case ProductActionsType.GET_ALL_PRODUCTS: {
@@ -72,8 +84,8 @@ export class ProductsComponent {
   onDeleteProduct(id: string) {
     this.productService.deleteProduct(id).subscribe({
       next: () => {
-        console.log('product deleted');
         this.onGetAllProducts();
+        console.log('product deleted');
       },
     });
   }

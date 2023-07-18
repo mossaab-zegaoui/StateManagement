@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppState, ProductAction } from 'src/app/model/app-state.interface';
 import { Product } from 'src/app/model/prodcut.interface';
+import { EventDrivenService } from 'src/app/services/event-driven.service';
 
 @Component({
   selector: 'app-product-list',
@@ -10,8 +11,9 @@ import { Product } from 'src/app/model/prodcut.interface';
 })
 export class ProductListComponent {
   @Input() productList$: Observable<AppState<Product[]>> | null = null;
-  @Output() eventEmitter: EventEmitter<ProductAction> = new EventEmitter();
+  constructor(private eventService: EventDrivenService) {}
+
   onAction($event: ProductAction) {
-    this.eventEmitter.emit($event);
+    this.eventService.publishEvent($event);
   }
 }

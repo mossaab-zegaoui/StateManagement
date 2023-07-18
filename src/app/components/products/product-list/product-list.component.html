@@ -9,7 +9,8 @@
                     <th>Selected</th>
                     <th>Actions</th>
                 </tr>
-                <app-product-item *ngFor="let product of result.data" style="display: contents"[product]="product" (eventEmitter)="onAction($event)"></app-product-item>
+                <app-product-item *ngFor="let product of result.data" style="display: contents"
+                    [product]="product"></app-product-item>
 
             </table>
         </ng-container>
