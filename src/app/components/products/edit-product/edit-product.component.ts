@@ -41,7 +41,7 @@ export class EditProductComponent implements OnInit {
   onUpdateProduct() {
     this.productService.updateProduct(this.editForm.value).subscribe({
       next: (response: Product) => {
-        console.log('produced updated');
+        alert('product has been updated');
         console.log(response);
       },
     });

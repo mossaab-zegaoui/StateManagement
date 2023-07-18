@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import {
-  ProductAction,
   ProductActionsType,
 } from 'src/app/model/app-state.interface';
 import { Product } from 'src/app/model/prodcut.interface';
+import { EventDrivenService } from 'src/app/services/event-driven.service';
 
 @Component({
   selector: 'app-product-item',
@@ -12,21 +12,21 @@ import { Product } from 'src/app/model/prodcut.interface';
 })
 export class ProductItemComponent {
   @Input() product!: Product;
-  @Output() eventEmitter: EventEmitter<ProductAction> = new EventEmitter();
+  constructor(private eventService: EventDrivenService) {}
   onSelect(product: Product) {
-    this.eventEmitter.emit({
+    this.eventService.publishEvent({
       type: ProductActionsType.SELECT_PRODUCT,
       payload: product,
     });
   }
   onDelete(id: string) {
-    this.eventEmitter.emit({
+    this.eventService.publishEvent({
       type: ProductActionsType.DELETE_PRODUCT,
       payload: id,
     });
   }
   onEdit(id: string) {
-    this.eventEmitter.emit({
+    this.eventService.publishEvent({
       type: ProductActionsType.EDIT_PRODUCT,
       payload: id,
     });

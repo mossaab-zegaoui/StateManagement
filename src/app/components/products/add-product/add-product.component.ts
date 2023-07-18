@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Product } from 'src/app/model/prodcut.interface';
 import { ProductService } from 'src/app/services/product.service';
 
@@ -13,8 +12,7 @@ export class AddProductComponent implements OnInit {
   addForm!: FormGroup;
   constructor(
     private fb: FormBuilder,
-    private productService: ProductService,
-    private router: Router
+    private productService: ProductService
   ) {}
   ngOnInit(): void {
     this.addForm = this.fb.group({
@@ -27,9 +25,9 @@ export class AddProductComponent implements OnInit {
   onSaveProduct() {
     this.productService.addProduct(this.addForm.value).subscribe({
       next: (data: Product) => {
-        console.log('product has been added');
+        this.addForm.reset();
+        alert('product added');
         console.log(data);
-        this.router.navigate(['products']);
       },
     });
   }
