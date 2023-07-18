@@ -1,1 +1,2 @@
-<p>Creating a conflict </p>
+<app-navbar (eventEmitter)="onAction($event)"></app-navbar>
+<app-product-list [productList$]="products$" (eventEmitter)="onAction($event)"></app-product-list>

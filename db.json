@@ -1,0 +1,28 @@
+{
+  "products": [
+    {
+      "name": "product88",
+      "id": "12",
+      "price": 3,
+      "isSelected": false
+    },
+    {
+      "id": "11",
+      "name": "product_7",
+      "price": 66,
+      "isSelected": true
+    },
+    {
+      "id": "1",
+      "name": "product_7",
+      "price": 66,
+      "isSelected": true
+    },
+    {
+      "id": "99",
+      "name": "product_99",
+      "price": "663.99",
+      "isSelected": false
+    }
+  ]
+}
