@@ -1,0 +1,17 @@
+<div class="container mt-4">
+    <ng-container *ngIf="(productList$ | async) as result">
+        <ng-container>
+            <table class="table">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Selected</th>
+                    <th>Actions</th>
+                </tr>
+                <app-product-item *ngFor="let product of result.data" style="display: contents"[product]="product" (eventEmitter)="onAction($event)"></app-product-item>
+
+            </table>
+        </ng-container>
+    </ng-container>
+</div>
